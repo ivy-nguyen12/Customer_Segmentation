@@ -1,25 +1,81 @@
-# Sun-Country_Customer-Segmentation
-Objective: This project processed Sun Country Airlines’ customer data using K-means clustering in Python to identify 5 distinct segments. For each segment, targeted marketing strategies were developed based on unique insights derived from Python and Tableau visualizations.
+# Airline Customer Segmentation
 
-Project prepared by: Vy Nguyen, Becky Wang, Dennis Wu, Kenjee Koh, Hsiang-Han Huang.
+## Overview
+This project applies unsupervised machine learning to segment Sun Country Airlines customers into distinct groups based on their booking and travel behavior. Using K-Means clustering and Python preprocessing, we uncovered five customer segments and identified their key characteristics. These insights help the airline tailor targeted marketing strategies, enhance loyalty, and improve the customer experience.
 
-## Clustering Approach
-First, we tested an optimum number of clusters in range 1 to 21 and designed an elbow curve plot to find the suitable number (cluster =5). Then we applied the cluster to fit data columns, running 30 times with different centroids. Last, we assigned the cluster column back to the original clustering data by merging on UID number.
+Prepared by: Vy Nguyen, Becky Wang, Dennis Wu, Kenjee Koh, Hsiang-Han Huang
 
-## Data Preparation
-For continuous variables, we scaled the influence of each variable and replaced it with the transformed data (0 to 1); For categorical variables, we chose more influential columns and converted them to dummy variables (=1); For Boolean variables, we converted them to numerical codes (True=1, False=0).
+Key business takeaways:
+- Customers differ significantly by booking habits, loyalty status, and seasonal preferences
+- Targeted strategies for each segment can drive revenue growth and loyalty
+- Clusters 1 & 2 represent the majority of customers and prefer non-digital channels
+- Cluster 4 travelers are likely business flyers booking last-minute trips
+- Cluster 3 (Ufly members) show strong early-booking loyalty and higher spending
 
-## Key Findings 
-By analyzing the Mean and Mode for each cluster, along with visualizing the differences in characteristics, we were able to describe each cluster using tiles:    
-* Cluster 0 - Spontaneous Direct Flyers in Summer
-* Cluster 1 - Non-Member Seasonal Group Travelers
-* Cluster 2 - Non-Member Middle-Aged Leisure Travelers
-* Cluster 3 - Ufly Early-Bird Direct Flyers
-* Cluster 4 - Non-Member Business Travelers
+## Dataset
+- **Source:** Internal reservation and booking data from Sun Country Airlines
+- **Scope:** Passenger-level records including demographics, booking details, loyalty status, and trip specifics
+- **Size:** ~48,000 customers (exact varies by filtering steps)
+- **Goal:** Identify behavioral patterns and group customers using unsupervised learning
+
+### 📋 Data Dictionary
+| Feature Type          | Examples                                                                                  |
+|-----------------------|-------------------------------------------------------------------------------------------|
+| **Continuous Variables** | `BaseFareAmt`, `Days_Prebooked`, `Age`                                                   |
+| **Categorical Variables** | `Gender`, `BkdClassOfService`, `BookingChannel`, `UflyMemberStatus`, `Seasonality`       |
+| **Boolean Variables** | `CardHolder`, `StopoverCode`, `RoundTrip`, `Group`                                        |
+
+All categorical variables were encoded using one-hot encoding. Continuous variables were scaled to standardize influence.
+
+## Tools & Methodology Overview
+**Languages and Libraries:** Python (pandas, sklearn, matplotlib, seaborn), Tableau
+
+### Data Preprocessing:
+- Scaled continuous features to [0,1] range
+- Encoded categorical variables using dummy variables
+- Converted boolean features to numerical format (True = 1, False = 0)
+- Filtered for verified bookings and cleaned anomalies
+
+### Clustering Approach:
+- Used K-Means clustering (k=5) based on Elbow Method
+- Fitted clustering model with 30 initialization runs (n_init=30)
+- Assigned cluster labels back to original data using unique customer ID
+- Analyzed clusters using grouped summary statistics (mean/mode) and visualizations
+
+## Cluster Summaries & Titles
+| Cluster | Segment Name                            | Description                                                                 |
+|---------|------------------------------------------|-----------------------------------------------------------------------------|
+| 0       | Spontaneous Direct Flyers in Summer      | Book late, fly direct in Q3, not Ufly members                              |
+| 1       | Non-Member Seasonal Group Travelers      | Prefer group travel, seasonal, use mixed booking channels                  |
+| 2       | Non-Member Middle-Aged Leisure Travelers | 35+, leisure flyers, prefer outside booking, seasonal                      |
+| 3       | Ufly Early-Bird Direct Flyers            | Loyal Ufly members, book far in advance, prefer non-stop flights           |
+| 4       | Non-Member Business Travelers            | Solo flyers, stopovers, last-minute bookings, higher spenders in summer    |
+
+## Results & Key Insights
+- **Clusters 1 & 2** make up the majority of the customer base and prefer offline booking. Target them with non-digital promotions, mail campaigns, and group deals.
+- **Cluster 4** aligns with business travelers: solo flyers, higher base fare, stopovers, and Q3 travel. Promote premium packages and last-minute travel deals.
+- **Cluster 3 (Ufly members)** show strong loyalty and pre-booking behavior. Encourage continued engagement through tiered perks, referrals, and premium upgrades.
+- **Seasonal preferences** vary by cluster. For example, Cluster 0 & 4 travel mostly in summer, while Cluster 1, 2, and 3 are winter/spring travelers.
 
 ## Recommendations
-Based on the segmentation analysis, we recommend Sun Country Airlines implement the below strategies to better serve distinct customer groups and maximize revenue potential:
-* Business Travelers (Cluster 4): To attract solo business travelers with last-minute bookings, offer specialized packages that include flight deals, single-person hotel options, and ride-hailing credits. Incentives like tier upgrades and first-booking discounts, combined with personalized emails focusing on time-saving benefits, would further enhance appeal. Expanding "Stay-and-Fly" partnerships with MSP hotels and lounges, and establishing co-branded deals with Fortune 500 companies, would provide exclusive perks and strengthen loyalty.
-* Older and Group Travelers (Clusters 1 & 2): Customers in these clusters prefer non-digital booking channels. Sun Country Airlines should invest in non-digital marketing efforts, such as mailbox fliers, vouchers, and airport booths, to engage with these segments. Promoting family and group-oriented packages, with kid-friendly resorts and activities, would appeal to group travelers, especially in Clusters 1 and 2.
-* Seasonal Travelers (Clusters 0, 1, 2, 3 & 4): Tailor marketing campaigns to target seasonal preferences. Promote summer destinations like Fort Myers, Las Vegas, and Costa Rica to travelers in Clusters 0 and 4. For winter/spring travelers in Clusters 1, 2, and 3, focus on destinations like Seattle and Miami, offering exclusive flight and hotel packages to align with travel trends.
-* Ufly Members (Cluster 3): Leverage the strong loyalty of Ufly members by expanding Referral and Appreciation programs. Offer exclusive referral bonuses like lounge access, free baggage, and seat upgrades. Additionally, capitalize on the higher spending patterns and early booking tendencies in this cluster by introducing tier-based loyalty perks and discounts on premium add-ons to incentivize long-term commitment
+- **Cluster 4 - Business Travelers:** Offer flight-hotel-ride packages, tier upgrades, and time-saving perks. Partner with MSP hotels and corporate programs.
+- **Clusters 1 & 2 - Group and Older Travelers:** Promote family packages, print-based promotions, and airport engagement booths.
+- **All Clusters - Seasonality-Based Promotions:** Market Fort Myers, Las Vegas, Costa Rica for Q3 flyers; promote Seattle and Miami for winter/spring travelers.
+- **Cluster 3 - Ufly Loyalty Flyers:** Introduce referral bonuses (e.g., lounge access, free baggage), and discounts on premium add-ons for early bookings.
+
+## Key Deliverables
+- Jupyter Notebook
+- Final Report PDF
+
+## What I Learned
+- Unsupervised clustering is a powerful tool for customer segmentation even without a target variable
+- Feature scaling and encoding have a major impact on clustering performance
+- Visualizations and grouped statistics enhance the interpretation of abstract clusters
+- Aligning marketing strategy with data-driven segmentation improves personalization and efficiency
+
+## What I Plan to Improve
+- Apply alternative clustering techniques (e.g., DBSCAN, Hierarchical) to compare cluster stability
+- Re-run the segmentation regularly with new data to adapt to shifting customer behavior
+
+## About Me
+Hi, I’m Vy Nguyen and I’m currently pursuing my MS in Business Analytics at UC Irvine. I’m passionate about data analytics in Finance, Investment, and Customer Strategy. Connect with me on [LinkedIn](https://www.linkedin.com/in/vy-ngoc-lan-nguyen).
